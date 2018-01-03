@@ -1,0 +1,210 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.2' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[      8166,        202]
+NotebookOptionsPosition[      7484,        184]
+NotebookOutlinePosition[      7841,        200]
+CellTagsIndexPosition[      7798,        197]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+Cell[BoxData[
+ RowBox[{"DateObject", "[", "]"}]], "Input",ExpressionUUID->"4c429510-9099-44e0-b84d-c8ad2164db3c"],
+
+Cell[BoxData[{
+ RowBox[{"Needs", "[", "\"\<BTools`\>\"", 
+  "]"}], "\[IndentingNewLine]", "$Context", "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"PackageTransfer", "[", "nameRaw_", "]"}], ":=", 
+  "\[IndentingNewLine]", 
+  RowBox[{"Module", "[", 
+   RowBox[{
+    RowBox[{"{", 
+     RowBox[{
+     "nameTar", ",", "namePakage", ",", "fileTar", ",", "newPackage", ",", 
+      "allCell", ",", "fileRaw"}], "}"}], ",", "\[IndentingNewLine]", 
+    RowBox[{
+     RowBox[{"nameTar", "=", 
+      RowBox[{
+       RowBox[{"StringTake", "[", 
+        RowBox[{"nameRaw", ",", 
+         RowBox[{"1", ";;", 
+          RowBox[{"-", "3"}]}]}], "]"}], "<>", "\"\<nb\>\""}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"namePakage", "=", 
+      RowBox[{"FileBaseName", "[", "nameRaw", "]"}]}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"fileTar", "=", 
+      RowBox[{"If", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"FindFile", "[", "nameTar", "]"}], "=!=", "$Failed"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{"NotebookOpen", "[", 
+         RowBox[{"nameTar", ",", 
+          RowBox[{"Visible", "\[Rule]", "False"}]}], "]"}], ",", 
+        "\[IndentingNewLine]", 
+        RowBox[{
+         RowBox[{"newPackage", "=", 
+          RowBox[{"BTools`Private`Hidden`GenerateNewPackage", "[", "]"}]}], 
+         ";", "\[IndentingNewLine]", 
+         RowBox[{"NotebookSave", "[", 
+          RowBox[{"newPackage", ",", "nameTar"}], "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"NotebookClose", "[", "newPackage", "]"}], ";", 
+         "\[IndentingNewLine]", 
+         RowBox[{"Return", "@", 
+          RowBox[{"PackageTransfer", "[", "nameRaw", "]"}]}], ";"}]}], 
+       "\[IndentingNewLine]", "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"allCell", "=", 
+      RowBox[{
+       RowBox[{"NotebookGet", "[", 
+        RowBox[{"fileRaw", "=", 
+         RowBox[{"NotebookOpen", "[", 
+          RowBox[{"nameRaw", ",", 
+           RowBox[{"Visible", "\[Rule]", "True"}]}], "]"}]}], "]"}], "[", 
+       RowBox[{"[", 
+        RowBox[{"1", ",", "1"}], "]"}], "]"}]}], ";", "\[IndentingNewLine]", 
+     RowBox[{"SelectionMove", "[", 
+      RowBox[{"fileTar", ",", "Next", ",", "CellGroup"}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"NotebookWrite", "[", 
+      RowBox[{"fileTar", ",", "allCell"}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"NotebookPut", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"NotebookGet", "[", "fileTar", "]"}], "/.", 
+        RowBox[{"{", "\[IndentingNewLine]", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"RowBox", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"RowBox", "[", 
+               RowBox[{"{", 
+                RowBox[{"\"\<BeginPackage\>\"", ",", "box___"}], "}"}], "]"}],
+               ",", "\"\<;\>\""}], "}"}], "]"}], "\[RuleDelayed]", 
+           "Nothing"}], ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"RowBox", "[", 
+            RowBox[{"{", 
+             RowBox[{
+              RowBox[{"RowBox", "[", 
+               RowBox[{"{", 
+                RowBox[{"\"\<EndPackage\>\"", ",", "box___"}], "}"}], "]"}], 
+              ",", "\"\<;\>\""}], "}"}], "]"}], "\[RuleDelayed]", "Nothing"}],
+           ",", "\[IndentingNewLine]", 
+          RowBox[{
+           RowBox[{"RowBox", "[", 
+            RowBox[{"{", 
+             RowBox[{
+             "\"\<Begin\>\"", ",", "\"\<[\>\"", ",", 
+              "\"\<\\\"`Private`\\\"\>\"", ",", "\"\<]\>\""}], "}"}], "]"}], 
+           "\[RuleDelayed]", 
+           RowBox[{"RowBox", "[", 
+            RowBox[{"{", 
+             RowBox[{"\"\<Begin\>\"", ",", "\"\<[\>\"", ",", 
+              RowBox[{
+              "\"\<\\\"`\>\"", "<>", "namePakage", "<>", "\"\<`\\\"\>\""}], 
+              ",", "\"\<]\>\""}], "}"}], "]"}]}]}], "\[IndentingNewLine]", 
+         "}"}]}], ",", "fileTar"}], "]"}], ";", "\[IndentingNewLine]", 
+     RowBox[{"NotebookSave", "[", "fileTar", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"Echo", "[", 
+      RowBox[{"namePakage", ",", "\"\<Transform Succeed: \>\""}], "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"NotebookClose", "[", "fileTar", "]"}], ";", 
+     "\[IndentingNewLine]", 
+     RowBox[{"NotebookClose", "[", "fileRaw", "]"}], ";", 
+     "\[IndentingNewLine]", "namePakage"}]}], "\[IndentingNewLine]", 
+   "]"}]}]}], "Input",
+ CellChangeTimes->{{3.7224025152585115`*^9, 3.7224025152665167`*^9}, 
+   3.722402819842998*^9, {3.7224037562163305`*^9, 3.722403756558996*^9}, {
+   3.7224037916861315`*^9, 3.7224037936604967`*^9}, 3.722403828021865*^9, {
+   3.7224046176850753`*^9, 3.7224046203225956`*^9}, {3.722404674683241*^9, 
+   3.7224046860084343`*^9}, {3.7224048143861675`*^9, 3.72240486787208*^9}, {
+   3.7224049042277927`*^9, 3.7224052184913816`*^9}, {3.722405351333061*^9, 
+   3.722405356919628*^9}, {3.722405434949005*^9, 3.7224055116960373`*^9}, {
+   3.722405693836238*^9, 3.722405712428031*^9}, {3.722405775354143*^9, 
+   3.7224057846415825`*^9}, {3.7224058146819124`*^9, 3.722405837215706*^9}, {
+   3.722406206124454*^9, 3.722406207853615*^9}, {3.7224062834770308`*^9, 
+   3.7224063098605924`*^9}, {3.723091878355404*^9, 3.7230918802571707`*^9}, {
+   3.723092191637473*^9, 3.7230922272643204`*^9}, {3.723092317675357*^9, 
+   3.7230923353101625`*^9}, {3.723092494511839*^9, 3.7230925399647713`*^9}, {
+   3.7230925712452583`*^9, 3.7230925749930916`*^9}, {3.723092607716673*^9, 
+   3.723092611289258*^9}, {3.7230937004207006`*^9, 
+   3.7230937036930895`*^9}},ExpressionUUID->"73eb3421-0112-47c3-9d76-\
+097145c08619"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{"time", "=", 
+   RowBox[{"AbsoluteTime", "[", "]"}]}], ";"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Packages$Paths", "=", 
+   RowBox[{"DirectoryName", "[", 
+    RowBox[{"NotebookFileName", "[", "]"}], "]"}]}], 
+  ";"}], "\[IndentingNewLine]", 
+ RowBox[{"PackageTransfer", "/@", 
+  RowBox[{"FileNames", "[", 
+   RowBox[{"\"\<*.wl\>\"", ",", "Packages$Paths"}], 
+   "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"AbsoluteTime", "[", "]"}], "-", "time"}]}], "Input",ExpressionUUID-\
+>"42b55902-8453-4a6c-bb9e-bf0b4e89e5cd"],
+
+Cell[BoxData[{
+ RowBox[{"DateObject", "[", "]"}], "\[IndentingNewLine]", 
+ RowBox[{"fs", "=", 
+  RowBox[{"FileNames", "[", 
+   RowBox[{"\"\<*.wl\>\"", ",", 
+    RowBox[{"DirectoryName", "[", 
+     RowBox[{"NotebookFileName", "[", "]"}], "]"}]}], "]"}]}]}], "Input",
+ CellChangeTimes->{{3.722487461412099*^9, 
+  3.7224875095014334`*^9}},ExpressionUUID->"33a42e81-6bd7-40fe-a762-\
+7ad0d36c3262"],
+
+Cell[BoxData[
+ RowBox[{"PackageTransfer", "@", 
+  RowBox[{"fs", "[", 
+   RowBox[{"[", "3", "]"}], "]"}]}]], "Input",
+ CellChangeTimes->{{3.7224875042705235`*^9, 
+  3.7224875172700844`*^9}},ExpressionUUID->"a151ffd5-87ef-4826-bcb5-\
+e2a82c665f3b"]
+},
+WindowSize->{775, 873},
+WindowMargins->{{Automatic, 228}, {22, Automatic}},
+FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (2017\:5e7410\:67082\
+\:65e5)",
+StyleDefinitions->"Default.nb"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[558, 20, 113, 1, 27, "Input",ExpressionUUID->"4c429510-9099-44e0-b84d-c8ad2164db3c"],
+Cell[674, 23, 5589, 123, 514, "Input",ExpressionUUID->"73eb3421-0112-47c3-9d76-097145c08619"],
+Cell[6266, 148, 569, 15, 82, "Input",ExpressionUUID->"42b55902-8453-4a6c-bb9e-bf0b4e89e5cd"],
+Cell[6838, 165, 393, 9, 46, "Input",ExpressionUUID->"33a42e81-6bd7-40fe-a762-7ad0d36c3262"],
+Cell[7234, 176, 246, 6, 27, "Input",ExpressionUUID->"a151ffd5-87ef-4826-bcb5-e2a82c665f3b"]
+}
+]
+*)
+
