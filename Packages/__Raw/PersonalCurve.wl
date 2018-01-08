@@ -27,6 +27,7 @@ FourierPaintPointListToLines::usage = "";
 PersonalCurveMake::usage = "";
 PersonalCurveGet::usage = "";
 FourierPlot::usage = "";
+PersonalCurveLines::usage = "";
 (* ::Section:: *)
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
@@ -235,7 +236,27 @@ FourierPaintPreviewManipulate[data_] :=Manipulate[
 	{{n, 5, "展开阶数"}, 1, 50,1,Appearance -> "Labeled"},
 	TrackedSymbols :> True, SaveDefinitions -> True
 ];
-
+FourierPaintPreviewExport[data_]:=Block[
+	{now,show,tab,e,t},
+	now=AbsoluteTime[];
+	show[n_]:=Show[{
+		ParametricPlot[Evaluate[FourierPaintMakeFourierSeries[#,t,n]&/@Cases[data,{"Closed",_}]],{t,-Pi,Pi},
+			PlotStyle -> Black, Frame -> True, Axes -> False, FrameTicks -> None,
+			PlotRange -> All, ImagePadding -> 12
+		],
+		ParametricPlot[Evaluate[FourierPaintMakeFourierSeries[#,t,n]&/@Cases[data,{"Open",_}]],{t,-Pi,0},
+			PlotStyle -> Black, Frame -> True, Axes -> False, FrameTicks -> None,
+			PlotRange -> All, ImagePadding -> 12
+		]
+	}];
+	tab=Quiet[Flatten[{#,Reverse@#}]&@Table[show[i],{i,50}]];
+	e=Export[DateString[
+		DateObject[],
+		{"Year", "Month", "Day", "-", "Hour24", "Minute", "Second"}
+	]<> ".gif",tab, "AnimationRepetitions"->Infinity];
+	Echo[Quantity[Round[AbsoluteTime[]-now,10^-4.],"seconds"],"IO Time: "];
+	e;
+];
 
 
 
@@ -280,7 +301,7 @@ PersonalCurveMake[hLines_,OptionsPattern[]]:=Block[
 	now=AbsoluteTime[];
 	$icon=PersonalCurveImage[hLines];
 	$curves=Length[hLines];
-	$order=(*OptionValue[Order]*)100;
+	$order=OptionValue[Order];
 	$data = FourierPaintComponent[
 		hLines,
 		"OpenClose" -> ConstantArray["Closed", Length[hLines]],
@@ -295,35 +316,29 @@ PersonalCurveMake[hLines_,OptionsPattern[]]:=Block[
 		"Data"->$data
 	|>]
 ];
-FourierPaintPreviewExport[data_]:=Block[
-	{now,show,tab,e,t},
-	now=AbsoluteTime[];
-	show[n_]:=Show[{
-			ParametricPlot[Evaluate[FourierPaintMakeFourierSeries[#,t,n]&/@Cases[data,{"Closed",_}]],{t,-Pi,Pi},
-				PlotStyle -> Black, Frame -> True, Axes -> False, FrameTicks -> None,
-				PlotRange -> All, ImagePadding -> 12
-			],
-			ParametricPlot[Evaluate[FourierPaintMakeFourierSeries[#,t,n]&/@Cases[data,{"Open",_}]],{t,-Pi,0},
-				PlotStyle -> Black, Frame -> True, Axes -> False, FrameTicks -> None,
-				PlotRange -> All, ImagePadding -> 12
-			]
-		}];
-	tab=Quiet[Flatten[{#,Reverse@#}]&@Table[show[i],{i,50}]];
-	e=Export[DateString[
-		DateObject[],
-		{"Year", "Month", "Day", "-", "Hour24", "Minute", "Second"}
-	]<> ".gif",tab, "AnimationRepetitions"->Infinity];
-	Echo[Quantity[Round[AbsoluteTime[]-now,10^-4.],"seconds"],"IO Time: "];
-	e;
+PersonalCurveData[ass_]["Loss"]:=FourierPaintLoss@Lookup[ass,"Data"];
+PersonalCurveData[ass_]["Grid"]:=FourierPaintPreviewMulticolumn@Lookup[ass,"Data"];
+PersonalCurveData[ass_]["Preview"]:=FourierPaintPreviewManipulate@Lookup[ass,"Data"];
+PersonalCurveData[ass_]["Export"]:=FourierPaintPreviewExport@Lookup[ass,"Data"];
+PersonalCurveData[ass_]["Curve"]:=PersonalCurveGet[PersonalCurveData[ass]];
+Options[PersonalCurveLines]={PixelConstrained->10};
+PersonalCurveLines[img_,OptionsPattern[]]:=Block[
+	{edge,lines,preview},
+	edge = {#2, -#1}&@@@ Position[ImageData[EdgeDetect[img]],1,{2}];
+	lines= FourierPaintPointListToLines[edge,OptionValue[PixelConstrained]];
+	preview=Graphics[{Hue[RandomReal[]],Line[#]}&/@lines ];
+	Echo[Length@lines,"识别曲线数: "];
+	CellPrint[ExpressionCell[preview,"Output"]];
+	Return[lines];
 ];
-Options[PersonalCurveGet]={Order->25,Rationalize->10^-3,Variables->"t"};
+Options[PersonalCurveGet]={Order->25,Rationalize->10^-2,Variables->"t"};
 PersonalCurveGet[PersonalCurveData[ass_],OptionsPattern[]]:=Block[
 	{cell,curve},
 	cell=Cell[BoxData[
 		RowBox[{"ListLinePlot", "[",RowBox[{RowBox[{"Table", "[",RowBox[{RowBox[{"Evaluate", "[",
-		RowBox[{"N", "@", "curve"}], "]"}], ",",RowBox[{"{",RowBox[{ToString@OptionValue[Variables],
-		",", "0", ",",RowBox[{"4", "Pi", "*",ToString@Lookup[ass,"Curves"]}], ",", "0.05"}], "}"}]}], "]"}],
-		",",RowBox[{"AspectRatio", "->", "Automatic"}]}], "]"}]
+			RowBox[{"N", "@", "curve"}], "]"}], ",",RowBox[{"{",RowBox[{ToString@OptionValue[Variables],
+			",", "0", ",",RowBox[{"4", "Pi", "*",ToString@Lookup[ass,"Curves"]}], ",", "0.05"}], "}"}]}], "]"}],
+			",",RowBox[{"AspectRatio", "->", "Automatic"}]}], "]"}]
 	],
 		"Input"
 	];
@@ -334,13 +349,8 @@ PersonalCurveGet[PersonalCurveData[ass_],OptionsPattern[]]:=Block[
 		"dx"->OptionValue[Rationalize]
 	];
 	CellPrint[cell];
-	curve
+	Return[curve];
 ];
-PersonalCurveData[ass_]["Loss"]:=FourierPaintLoss@Lookup[ass,"Data"];
-PersonalCurveData[ass_]["Grid"]:=FourierPaintPreviewMulticolumn@Lookup[ass,"Data"];
-PersonalCurveData[ass_]["Preview"]:=FourierPaintPreviewManipulate@Lookup[ass,"Data"];
-PersonalCurveData[ass_]["Export"]:=FourierPaintPreviewExport@Lookup[ass,"Data"];
-PersonalCurveData[ass_]["Curve"]:=PersonalCurveGet[PersonalCurveData[ass]];
 (* ::Subsubsection:: *)
 (*PersonalCurveMake*)
 
