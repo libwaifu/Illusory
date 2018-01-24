@@ -22,13 +22,13 @@
 (*这里应该填这个函数包的介绍*)
 (* ::Section:: *)
 (*函数说明*)
-BeginPackage["Core$Illusive`"];
+BeginPackage["Core$Illusory`"];
 CostEcho::usage = "";
 (* ::Section:: *)
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
-Core$Illusive::usage = "Illusive包的核心函数";
+Core$Illusory::usage = "Illusory包的核心函数";
 Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
