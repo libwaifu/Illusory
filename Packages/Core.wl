@@ -9,8 +9,8 @@
 (*Establish from GalAster's template*)
 (**)
 (* ::Text:: *)
-(*Author:我是作者*)
-(*Creation Date:我是创建日期*)
+(*Author:GalAster*)
+(*Creation Date:20180206*)
 (*Copyright:CC4.0 BY+NA+NC*)
 (* ::Program:: *)
 (*该项许可协议规定*)
@@ -19,34 +19,31 @@
 (*2.基于我的作品创作的所有新作品都要适用同一类型的许可协议*)
 (*3.任何以我的原作为基础创作的演绎作品自然同样都不得进行商业性使用*)
 (* ::Text:: *)
-(*这里应该填这个函数包的介绍*)
-(* ::Section:: *)
-(*函数说明*)
-BeginPackage["Core$Illusory`"];
-CostEcho::usage = "";
+(*Illusory包的通用函数*)
 (* ::Section:: *)
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
 Core$Illusory::usage = "Illusory包的核心函数";
-Begin["`Private`"];
+CostEcho::usage = "";
+Begin["`Core`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
-Core$Version="V1.0";
-Core$LastUpdate="2018-01-06";
+Package$Version = "V1.0";
+Package$LastUpdate = "2018-01-06";
 (* ::Subsubsection:: *)
 (*CostEcho*)
-getMemory:=N@UnitConvert[Quantity[MemoryInUse[],"Bytes"],"Megabytes"];
-SetAttributes[CostEcho,{HoldAll}];
-CostEcho[expr_]:=Block[
-	{allt,cput,ans,now},
-	allt=AbsoluteTime[];
-	now=getMemory;
-	{cput,ans}=Timing@expr;
-	Echo[Quantity[cput,"Seconds"], "CPU Time: "];
-	Echo[getMemory-now,"Memory used: "];
-	CellPrint[ExpressionCell[ans,"Output"]];
-	Echo[AbsoluteTime[]-allt, "All Time: "];
+getMemory := N@UnitConvert[Quantity[MemoryInUse[], "Bytes"], "Megabytes"];
+SetAttributes[CostEcho, {HoldAll}];
+CostEcho[expr_] := Block[
+	{allt, cput, ans, now},
+	allt = AbsoluteTime[];
+	now = getMemory;
+	{cput, ans} = Timing@expr;
+	Echo[Quantity[cput, "Seconds"], "CPU Time: "];
+	Echo[getMemory - now, "Memory used: "];
+	CellPrint[ExpressionCell[ans, "Output"]];
+	Echo[AbsoluteTime[] - allt, "All Time: "];
 	ans;
 ];
 
@@ -54,14 +51,13 @@ CostEcho[expr_]:=Block[
 
 (* ::Subsubsection:: *)
 (*功能块 2*)
-ExampleFunction[2]="我就是个示例函数,什么功能都没有";
+ExampleFunction[2] = "我就是个示例函数,什么功能都没有";
 
 
 (* ::Subsection::Closed:: *)
 (*附加设置*)
-End[] ;
 SetAttributes[
 	{CostEcho},
-	{Protected,ReadProtected}
+	{Protected, ReadProtected}
 ];
-EndPackage[];
+End[]

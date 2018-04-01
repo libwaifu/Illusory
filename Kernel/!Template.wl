@@ -27,21 +27,21 @@ ExampleFunction::usage = "这里应该填这个函数的说明,如果要换行�
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
-Example$Version="V1.0";
-Example$LastUpdate="2017-12-25";
+Example$Version = "V1.0";
+Example$LastUpdate = "2017-12-25";
 ExNumber::usage = "程序包的说明,这里抄一遍";
 Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
 (* ::Subsubsection:: *)
 (*功能块 1*)
-ExampleFunction[1]="我就是个示例函数,什么功能都没有";
+ExampleFunction[1] = "我就是个示例函数,什么功能都没有";
 
 
 
 (* ::Subsubsection:: *)
 (*功能块 2*)
-ExampleFunction[2]="我就是个示例函数,什么功能都没有";
+ExampleFunction[2] = "我就是个示例函数,什么功能都没有";
 
 
 (* ::Subsection::Closed:: *)
@@ -49,6 +49,6 @@ ExampleFunction[2]="我就是个示例函数,什么功能都没有";
 End[] ;
 SetAttributes[
 	{ },
-	{Protected,ReadProtected}
+	{Protected, ReadProtected}
 ];
 EndPackage[];

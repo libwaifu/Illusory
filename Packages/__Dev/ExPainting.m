@@ -34,9 +34,9 @@ PointPainting[image,n]指定生成时的点的数量为n,默认值10000";
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
-ExPainting$Version="V0.6";
-ExPainting$Environment="V11.0+";
-ExPainting$LastUpdate="2016-11-27";
+ExPainting$Version = "V0.6";
+ExPainting$Environment = "V11.0+";
+ExPainting$LastUpdate = "2016-11-27";
 ExPainting::usage = "程序包的说明,这里抄一遍";
 Begin["`Private`"];
 (* ::Subsection::Closed:: *)
@@ -51,20 +51,20 @@ Begin["`Private`"];
 (* ::Subsubsection:: *)
 (*未分类代码*)
 
-ShapedFunction=Compile[{{v,_Real},{kernel,_Real,2}},v*kernel,
-  RuntimeAttributes->{Listable},Parallelization->True,
-  CompilationTarget->"C",RuntimeOptions->"Speed"];
-ShapedPixels[img_,kernel_]:=
-    With[{dim=ImageDimensions[img]},
-      ImageCrop[Image[Join@@Transpose[Join@@@
-          Transpose[ShapedFunction[ImageData[ImageResize[img,
-            Ceiling[dim/Reverse[Dimensions[kernel]]]]],kernel],
-            {1,2,5,4,3}],{1,3,2,4}]],dim]];
-ShapedPainting[pic_,mat___]:=Manipulate[
-  ShapedPixels[pic,ArrayPad[matrix[r],padding]],
-  {{r,0,"遮罩半径"},0,20,1},{{padding,0,"遮罩间隙"},0,10,1},
-  {{matrix,DiskMatrix,"遮罩矩阵"},{DiskMatrix,DiamondMatrix,
-    BoxMatrix,IdentityMatrix,CrossMatrix,mat}}];
+ShapedFunction = Compile[{{v, _Real}, {kernel, _Real, 2}}, v * kernel,
+	RuntimeAttributes -> {Listable}, Parallelization -> True,
+	CompilationTarget -> "C", RuntimeOptions -> "Speed"];
+ShapedPixels[img_, kernel_] :=
+	With[{dim = ImageDimensions[img]},
+		ImageCrop[Image[Join @@ Transpose[Join @@@
+			Transpose[ShapedFunction[ImageData[ImageResize[img,
+				Ceiling[dim / Reverse[Dimensions[kernel]]]]], kernel],
+				{1, 2, 5, 4, 3}], {1, 3, 2, 4}]], dim]];
+ShapedPainting[pic_, mat___] := Manipulate[
+	ShapedPixels[pic, ArrayPad[matrix[r], padding]],
+	{{r, 0, "遮罩半径"}, 0, 20, 1}, {{padding, 0, "遮罩间隙"}, 0, 10, 1},
+	{{matrix, DiskMatrix, "遮罩矩阵"}, {DiskMatrix, DiamondMatrix,
+		BoxMatrix, IdentityMatrix, CrossMatrix, mat}}];
 (*测试代码 ShapedPainting[pic, Rescale@GaussianMatrix[#] &]*)
 
 (*见鬼,写完才发现Mathematica没有YUV的色彩空间...
@@ -103,47 +103,47 @@ RGB2RGBCompile = Compile[{{r, _Integer}, {g, _Integer}, {b, _Integer}},
 *)
 (*伪造的劣化绿绿算法,再编译加速下好了
 RGB2RGB=Function[{r,g,b},{RandomReal[{0.9,1.0}]r,RandomReal[{0.99,1.01}]g,RandomReal[{0.9,1.0}]b}];*)
-RGB2RGB=Compile[{{r,_Integer},{g,_Integer},{b,_Integer}},{RandomReal[{0.9,1.0}]r,RandomReal[{0.99,1.01}]g,RandomReal[{0.9,1.0}]b}];
-TiebaPainting[image_,qua_:0.5,time_:20]:=Block[{img,w},
-  img=image;
-  w=ImageDimensions[img][[1]];
-  img=ImageResize[img,201];
-  img=Nest[Image[Apply[RGB2RGB,ImageData[#,"Byte"],{2}],"Byte"]&,img,time];
-  Do[Export["baidu.jpeg",img,"CompressionLevel"->(1-qua)];
-  img=Import["baidu.jpeg"]
-    ,{n,1,time}];
-  img=ImageResize[img,w]];
+RGB2RGB = Compile[{{r, _Integer}, {g, _Integer}, {b, _Integer}}, {RandomReal[{0.9, 1.0}]r, RandomReal[{0.99, 1.01}]g, RandomReal[{0.9, 1.0}]b}];
+TiebaPainting[image_, qua_ : 0.5, time_ : 20] := Block[{img, w},
+	img = image;
+	w = ImageDimensions[img][[1]];
+	img = ImageResize[img, 201];
+	img = Nest[Image[Apply[RGB2RGB, ImageData[#, "Byte"], {2}], "Byte"]&, img, time];
+	Do[Export["baidu.jpeg", img, "CompressionLevel" -> (1 - qua)];
+	img = Import["baidu.jpeg"]
+		, {n, 1, time}];
+	img = ImageResize[img, w]];
 (*本函数全是bug,一点都不好用*)
-ExpandPainting[img_,neigh_:20,samp_:1000]:=Block[{dims,canvas,mask},
-  dims=ImageDimensions[img];
-  canvas=ImageCrop[starryNight,2*dims,Padding->White];
-  mask=ImageCrop[ConstantImage[Black,dims],2*dims,Padding->White];
-  Inpaint[canvas,mask,Method->{"TextureSynthesis","NeighborCount"->30,"MaxSamples"->1000}]];
+ExpandPainting[img_, neigh_ : 20, samp_ : 1000] := Block[{dims, canvas, mask},
+	dims = ImageDimensions[img];
+	canvas = ImageCrop[starryNight, 2 * dims, Padding -> White];
+	mask = ImageCrop[ConstantImage[Black, dims], 2 * dims, Padding -> White];
+	Inpaint[canvas, mask, Method -> {"TextureSynthesis", "NeighborCount" -> 30, "MaxSamples" -> 1000}]];
 (*LineWebPainting[图像,细腻度:100]*)
-LineWebPainting[img_,k_:100]:=Block[{radon,lhalf,inverseDualRadon,lines},
-  If[k === 0, Return[img]];
-  radon=Radon[ColorNegate@ColorConvert[img,"Grayscale"]];
-  {w,h}=ImageDimensions[radon];
-  lhalf=Table[N@Sin[\[Pi] i/h],{i,0,h-1},{j,0,w-1}];
-  inverseDualRadon=Image@Chop@InverseFourier[lhalf Fourier[ImageData[radon]]];
-  lines=ImageApply[With[{p=Clip[k #,{0,1}]},RandomChoice[{1-p,p}->{0,1}]]&,inverseDualRadon];
-  ColorNegate@ImageAdjust[InverseRadon[lines,ImageDimensions[img],Method->None],0,{0,k}]];
-ImageStandUp[img_]:=Block[{lines=ImageLines@DeleteSmallComponents[EdgeDetect[img,Method->{"Canny","StraightEdges"->0.4}]],list},
-  ImageRotate[img,Mean@Select[list=Mod[-#,Pi/2,-Pi/4]&/@ArcTan@@@Subtract@@@lines,
-    Chop[First@Commonest@Round[list,1/1000]-#,1/1000]===0&],Background->Transparent]];
-ImageStandUp[img_,"TryAll"]:=Block[{imgrote},imgrote=ImageRotate[img,#,"SameRatioCropping"]&/@
-    Range[-Pi/2,Pi/2,Pi/6];TableForm[Function[{a,b},a->b]@@@Transpose@{imgrote,ImageStandUp/@imgrote}]];
+LineWebPainting[img_, k_ : 100] := Block[{radon, lhalf, inverseDualRadon, lines},
+	If[k === 0, Return[img]];
+	radon = Radon[ColorNegate@ColorConvert[img, "Grayscale"]];
+	{w, h} = ImageDimensions[radon];
+	lhalf = Table[N@Sin[\[Pi] i / h], {i, 0, h - 1}, {j, 0, w - 1}];
+	inverseDualRadon = Image@Chop@InverseFourier[lhalf Fourier[ImageData[radon]]];
+	lines = ImageApply[With[{p = Clip[k #, {0, 1}]}, RandomChoice[{1 - p, p} -> {0, 1}]]&, inverseDualRadon];
+	ColorNegate@ImageAdjust[InverseRadon[lines, ImageDimensions[img], Method -> None], 0, {0, k}]];
+ImageStandUp[img_] := Block[{lines = ImageLines@DeleteSmallComponents[EdgeDetect[img, Method -> {"Canny", "StraightEdges" -> 0.4}]], list},
+	ImageRotate[img, Mean@Select[list = Mod[-#, Pi / 2, -Pi / 4]& /@ ArcTan @@@ Subtract @@@ lines,
+		Chop[First@Commonest@Round[list, 1 / 1000] - #, 1 / 1000] === 0&], Background -> Transparent]];
+ImageStandUp[img_, "TryAll"] := Block[{imgrote}, imgrote = ImageRotate[img, #, "SameRatioCropping"]& /@
+	Range[-Pi / 2, Pi / 2, Pi / 6];TableForm[Function[{a, b}, a -> b] @@@ Transpose@{imgrote, ImageStandUp /@ imgrote}]];
 
 (*Mondrian[大小,复杂度,比例]*)
-Mondrian[p_,complex_:6,ratio_:0.7]:=Block[{splitx,splity,f,cols},
-  splitx[Rectangle[{x0_,y0_},{x1_,y1_}]]:=
-      Block[{a=RandomInteger[{x0+1,x1-1}]},{Rectangle[{x0,y0},{a,y1}],Rectangle[{a,y0},{x1,y1}]}];
-  splity[Rectangle[{x0_,y0_},{x1_,y1_}]]:=
-      Block[{a=RandomInteger[{y0+1,y1-1}]},{Rectangle[{x0,y0},{x1,a}],Rectangle[{x0,a},{x1,y1}]}];
-  f=ReplaceAll[r:Rectangle[{x0_,y0_},{x1_,y1_}]:>RandomChoice[{(x1-x0)^2,(y1-y0)^2,5}->{splitx,splity,Identity}]@r];
-  cols=MapThread[Darker,{{Black,White,Yellow,Red,Blue},{0,0.1,0.1,0.15,0.3}}];
-  Graphics[{EdgeForm@Thickness[0.012],{FaceForm@RandomChoice@cols,#}&/@
-      Flatten@Nest[f,Rectangle[{0,0},{p,p}],complex]},AspectRatio->ratio]];
+Mondrian[p_, complex_ : 6, ratio_ : 0.7] := Block[{splitx, splity, f, cols},
+	splitx[Rectangle[{x0_, y0_}, {x1_, y1_}]] :=
+		Block[{a = RandomInteger[{x0 + 1, x1 - 1}]}, {Rectangle[{x0, y0}, {a, y1}], Rectangle[{a, y0}, {x1, y1}]}];
+	splity[Rectangle[{x0_, y0_}, {x1_, y1_}]] :=
+		Block[{a = RandomInteger[{y0 + 1, y1 - 1}]}, {Rectangle[{x0, y0}, {x1, a}], Rectangle[{x0, a}, {x1, y1}]}];
+	f = ReplaceAll[r : Rectangle[{x0_, y0_}, {x1_, y1_}] :> RandomChoice[{(x1 - x0)^2, (y1 - y0)^2, 5} -> {splitx, splity, Identity}]@r];
+	cols = MapThread[Darker, {{Black, White, Yellow, Red, Blue}, {0, 0.1, 0.1, 0.15, 0.3}}];
+	Graphics[{EdgeForm@Thickness[0.012], {FaceForm@RandomChoice@cols, #}& /@
+		Flatten@Nest[f, Rectangle[{0, 0}, {p, p}], complex]}, AspectRatio -> ratio]];
 
 
 (* ::Subsection::Closed:: *)

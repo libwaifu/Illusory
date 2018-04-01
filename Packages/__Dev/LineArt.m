@@ -23,23 +23,23 @@ LineWebPainting::usage = "这里应该填这个函数的说明,如果要换行�
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
-LineArt$Version="V1.0";
-LineArt$Environment="V11.0+";
-LineArt$LastUpdate="2016-11-11";
+LineArt$Version = "V1.0";
+LineArt$Environment = "V11.0+";
+LineArt$LastUpdate = "2016-11-11";
 LineArt::usage = "程序包的说明,这里抄一遍";
 Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
 (* ::Subsubsection:: *)
 (*网状线图*)
-LineWebPainting[img_,k_:100]:=Block[{radon,lhalf,inverseDualRadon,lines},
-  If[k === 0, Return[img]];
-  radon=Radon[ColorNegate@ColorConvert[img,"Grayscale"]];
-  {w,h}=ImageDimensions[radon];
-  lhalf=Table[N@Sin[\[Pi] i/h],{i,0,h-1},{j,0,w-1}];
-  inverseDualRadon=Image@Chop@InverseFourier[lhalf Fourier[ImageData[radon]]];
-  lines=ImageApply[With[{p=Clip[k #,{0,1}]},RandomChoice[{1-p,p}->{0,1}]]&,inverseDualRadon];
-  ColorNegate@ImageAdjust[InverseRadon[lines,ImageDimensions[img],Method->None],0,{0,k}]];
+LineWebPainting[img_, k_ : 100] := Block[{radon, lhalf, inverseDualRadon, lines},
+	If[k === 0, Return[img]];
+	radon = Radon[ColorNegate@ColorConvert[img, "Grayscale"]];
+	{w, h} = ImageDimensions[radon];
+	lhalf = Table[N@Sin[\[Pi] i / h], {i, 0, h - 1}, {j, 0, w - 1}];
+	inverseDualRadon = Image@Chop@InverseFourier[lhalf Fourier[ImageData[radon]]];
+	lines = ImageApply[With[{p = Clip[k #, {0, 1}]}, RandomChoice[{1 - p, p} -> {0, 1}]]&, inverseDualRadon];
+	ColorNegate@ImageAdjust[InverseRadon[lines, ImageDimensions[img], Method -> None], 0, {0, k}]];
 
 
 

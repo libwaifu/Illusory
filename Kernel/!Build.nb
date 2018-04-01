@@ -18,46 +18,46 @@ WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
 Notebook[{
-Cell[BoxData[
- RowBox[{"DateObject", "[", "]"}]], "Input",ExpressionUUID->"e4f579b3-5cca-4a0a-9674-e9b6aba9d2dc"],
+	Cell[BoxData[
+		RowBox[{"DateObject", "[", "]"}]], "Input", ExpressionUUID -> "e4f579b3-5cca-4a0a-9674-e9b6aba9d2dc"],
 
-Cell[BoxData[{
- RowBox[{
-  RowBox[{"$Name", "=", "\"\<Geis\>\""}], ";"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"init", "=", 
-   RowBox[{"FindFile", "[", 
-    RowBox[{"$Name", "<>", "\"\<`\>\""}], "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"If", "[", 
-  RowBox[{
-   RowBox[{"!", 
-    RowBox[{
-     RowBox[{"FileBaseName", "[", "init", "]"}], "===", "\"\<init\>\""}]}], 
-   ",", 
-   RowBox[{"Abort", "[", "]"}]}], "]"}], "\[IndentingNewLine]", 
- RowBox[{
-  RowBox[{"kernel", "=", 
-   RowBox[{"DirectoryName", "[", "init", "]"}]}], 
-  ";"}], "\[IndentingNewLine]", 
- RowBox[{"$Delete", "=", 
-  RowBox[{"DeleteCases", "[", 
-   RowBox[{
-    RowBox[{"FileNames", "[", 
-     RowBox[{"\"\<*\>\"", ",", "kernel"}], "]"}], ",", "init"}], 
-   "]"}]}], "\[IndentingNewLine]", 
- RowBox[{"root", "=", 
-  RowBox[{"DirectoryName", "[", "kernel", "]"}]}]}], "Input",
- CellChangeTimes->{{3.723733905918761*^9, 3.7237340366129866`*^9}, {
-  3.7237341845173664`*^9, 3.723734240638686*^9}, {3.7237344027353487`*^9, 
-  3.723734458923619*^9}},ExpressionUUID->"df3e3620-d869-40a1-a0a6-\
+	Cell[BoxData[{
+		RowBox[{
+			RowBox[{"$Name", "=", "\"\<Geis\>\""}], ";"}], "\[IndentingNewLine]",
+		RowBox[{
+			RowBox[{"init", "=",
+				RowBox[{"FindFile", "[",
+					RowBox[{"$Name", "<>", "\"\<`\>\""}], "]"}]}],
+			";"}], "\[IndentingNewLine]",
+		RowBox[{"If", "[",
+			RowBox[{
+				RowBox[{"!",
+					RowBox[{
+						RowBox[{"FileBaseName", "[", "init", "]"}], "===", "\"\<init\>\""}]}],
+				",",
+				RowBox[{"Abort", "[", "]"}]}], "]"}], "\[IndentingNewLine]",
+		RowBox[{
+			RowBox[{"kernel", "=",
+				RowBox[{"DirectoryName", "[", "init", "]"}]}],
+			";"}], "\[IndentingNewLine]",
+		RowBox[{"$Delete", "=",
+			RowBox[{"DeleteCases", "[",
+				RowBox[{
+					RowBox[{"FileNames", "[",
+						RowBox[{"\"\<*\>\"", ",", "kernel"}], "]"}], ",", "init"}],
+				"]"}]}], "\[IndentingNewLine]",
+		RowBox[{"root", "=",
+			RowBox[{"DirectoryName", "[", "kernel", "]"}]}]}], "Input",
+		CellChangeTimes -> {{3.723733905918761*^9, 3.7237340366129866`*^9}, {
+			3.7237341845173664`*^9, 3.723734240638686*^9}, {3.7237344027353487`*^9,
+			3.723734458923619*^9}}, ExpressionUUID -> "df3e3620-d869-40a1-a0a6-\
 16def8337bc2"]
 },
-WindowSize->{775, 873},
-WindowMargins->{{Automatic, 487}, {Automatic, 40}},
-FrontEndVersion->"11.2 for Microsoft Windows (64-bit) (2017\:5e7410\:67082\
+	WindowSize -> {775, 873},
+	WindowMargins -> {{Automatic, 487}, {Automatic, 40}},
+	FrontEndVersion -> "11.2 for Microsoft Windows (64-bit) (2017\:5e7410\:67082\
 \:65e5)",
-StyleDefinitions->"Default.nb"
+	StyleDefinitions -> "Default.nb"
 ]
 (* End of Notebook Content *)
 

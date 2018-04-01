@@ -1,2 +1,5 @@
 (* Created with the Wolfram Language : www.wolfram.com *)
-{"ServerName" -> Automatic, CloudConnect -> False}
+{
+	"ServerName" -> Automatic,
+	CloudConnect -> False
+}
