@@ -34,7 +34,7 @@ before_deploy:
   - rm -f .travis.yml
   - rm -f .gitignore
   # 清理文档(可选)
-  - rm -rf Documentation && ll
+  - rm -rf Documentation
   - cd .. && tar -cJf ${GITHUB_REPO}.tar.xz ${GITHUB_REPO}
 deploy:
   provider: releases
