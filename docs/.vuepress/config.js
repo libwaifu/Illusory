@@ -4,7 +4,7 @@ module.exports = {
 		'/': {
 			lang: 'zh-CN',
 			title: 'Illusory',
-			description: 'Illusory!'
+			description: '视觉盛宴!'
 		}
 	},
 	serviceWorker: true,
@@ -20,8 +20,8 @@ module.exports = {
 				title: '简介',
 				children: [
 					'/Start/',
-					'/Start/Design.md',
-					'/Start/Guide.md'
+					'/Start/Developer.md',
+					'/Start/Editor.md'
 				]
 			}
 		]

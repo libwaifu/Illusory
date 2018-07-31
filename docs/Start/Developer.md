@@ -1,4 +1,6 @@
-# 设计模式
+# Developer
+
+软件开发指南
 
 ## Install
 
