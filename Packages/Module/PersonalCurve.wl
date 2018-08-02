@@ -20,6 +20,9 @@
 (*3.任何以我的原作为基础创作的演绎作品自然同样都不得进行商业性使用*)
 (* ::Text:: *)
 (*这里应该填这个函数包的介绍*)
+(* ::Section:: *)
+(*函数说明*)
+BeginPackage["Stereogram`"];
 FourierPaintPointListToLines::usage = "";
 PersonalCurveMake::usage = "";
 PersonalCurveGet::usage = "";
@@ -30,7 +33,7 @@ PersonalCurveLines::usage = "";
 (* ::Subsection::Closed:: *)
 (*主设置*)
 PersonalCurve::usage = "程序包的说明,这里抄一遍";
-Begin["`PersonalCurve`"];
+Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
 Needs["FourierSeries`"];
@@ -355,8 +358,9 @@ PersonalCurveGet[PersonalCurveData[ass_], OptionsPattern[]] := Block[
 
 (* ::Subsection::Closed:: *)
 (*附加设置*)
+End[];
 SetAttributes[
 	{ },
 	{Protected, ReadProtected}
 ];
-End[]
+EndPackage[]
