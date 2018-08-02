@@ -14,28 +14,32 @@
 (**)
 (*该软件包遵从CC协议:署名、非商业性使用、相同方式共享*)
 (**)
-(*这里应该填这个函数的介绍*)
+(* ::Text:: *)
+(*这里应该填这个函数包的介绍*)
+(* ::Section:: *)
+(*函数说明*)
+BeginPackage["LineArt`"];
+LineWeb::usage = "";
 (* ::Section:: *)
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
 LineArt::usage = "程序包的说明,这里抄一遍";
-LineWebPainting::usage = "";
-Begin["`LineArt`"];
+Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
-LineArt$Version = "V1.0";
-LineArt$LastUpdate = "2016-11-11";
+Version$LineArt = "V1.0";
+Update$LineArt = "2016-11-11";
 (* ::Subsubsection:: *)
 (*网状线图*)
-LineWebPainting[img_, k_ : 100] := Block[
-	{radon, lhalf, inverseDualRadon, lines},
-	If[k === 0, Return[img]];
+LineWeb[img_Image, k_ : 100] := Block[
+	{radon, halfL, invRadon, lines, w, h},
+	If[k == 0, Return[img]];
 	radon = Radon[ColorNegate@ColorConvert[img, "Grayscale"]];
 	{w, h} = ImageDimensions[radon];
-	lhalf = Table[N@Sin[\[Pi] i / h], {i, 0, h - 1}, {j, 0, w - 1}];
-	inverseDualRadon = Image@Chop@InverseFourier[lhalf Fourier[ImageData[radon]]];
-	lines = ImageApply[With[{p = Clip[k #, {0, 1}]}, RandomChoice[{1 - p, p} -> {0, 1}]]&, inverseDualRadon];
+	halfL = Table[N@Sin[Pi i / h], {i, 0, h - 1}, {j, 0, w - 1}];
+	invRadon = Image@Chop@InverseFourier[halfL Fourier[ImageData[radon]]];
+	lines = ImageApply[With[{p = Clip[k #, {0, 1}]}, RandomChoice[{1 - p, p} -> {0, 1}]]&, invRadon];
 	ColorNegate@ImageAdjust[InverseRadon[lines, ImageDimensions[img], Method -> None], 0, {0, k}]
 ];
 
@@ -43,6 +47,9 @@ LineWebPainting[img_, k_ : 100] := Block[
 
 (* ::Subsection::Closed:: *)
 (*附加设置*)
-End[] ;
-
-EndPackage[];
+End[];
+SetAttributes[
+	{LineWeb},
+	{Protected, ReadProtected}
+];
+EndPackage[]

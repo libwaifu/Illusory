@@ -17,37 +17,39 @@
 (*这里应该填这个函数的介绍*)
 (* ::Section:: *)
 (*函数说明*)
-BeginPackage["Illusory`LineArt`"];
+BeginPackage["PolyArt`"];
 LineWebPainting::usage = "这里应该填这个函数的说明,如果要换行用\"\r\"\r就像这样";
 (* ::Section:: *)
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
-LineArt$Version = "V1.0";
-LineArt$Environment = "V11.0+";
-LineArt$LastUpdate = "2016-11-11";
 LineArt::usage = "程序包的说明,这里抄一遍";
 Begin["`Private`"];
+Version$PolyArt = "V1.0";
+Update$PolyArt = "2016-11-11";
 (* ::Subsection::Closed:: *)
 (*主体代码*)
 (* ::Subsubsection:: *)
-(*功能块 1*)
-
-(* ::Subsubsection:: *)
 (*多边形画风*)
-TriPainting[i_, n_ : 1000] := Block[
-	{x, y, pt, pts}, {x, y} = ImageDimensions[i];
+TriPainting[i_Image, n_ : 1000] := Block[
+	{x, y, pt, pts},
+	{x, y} = ImageDimensions[i];
 	pt = Reverse /@ RandomChoice[Flatten@ImageData@GradientFilter[i, 2] -> Tuples@{Range[y, 1, -1], Range[x]}, n];
 	pts = Join[pt, {{0, 0}, {x, 0}, {x, y}, {0, y}}];
-	Graphics[With[{col = RGBColor@ImageValue[i, Mean @@ #]}, {EdgeForm@col, col, #}]& /@ MeshPrimitives[DelaunayMesh@pts, 2]]
+	Graphics[With[
+		{col = RGBColor@ImageValue[i, Mean @@ #]},
+		{EdgeForm@col, col, #}]& /@ MeshPrimitives[DelaunayMesh@pts, 2]
+	]
 ];
 PloyPainting[img_, n_ : 1000] := Block[
-	{x, y, gr, pt}, {x, y} = ImageDimensions[img];
+	{x, y, gr, pt},
+	{x, y} = ImageDimensions[img];
 	gr = ListDensityPlot[
 		Transpose@{RandomReal[x, n], RandomReal[y, n], RandomReal[1, n]},
 		InterpolationOrder -> 0, Frame -> False, Mesh -> All,
-		AspectRatio -> Automatic];
-	pt = Polygon[#[[1]]]& /@ Cases[Normal@gr, _Polygon, \[Infinity]];
+		AspectRatio -> Automatic
+	];
+	pt = Polygon[#[[1]]]& /@ Cases[Normal@gr, _Polygon, Infinity];
 	Graphics[With[
 		{col = RGBColor@ImageValue[img, Mean @@ #]},
 		{EdgeForm@col, col, #}]& /@ pt, AspectRatio -> ImageAspectRatio[img]
@@ -55,7 +57,8 @@ PloyPainting[img_, n_ : 1000] := Block[
 ];
 (*PloyPainting[图片,{精细度,畸变度,网格}]*)
 PloyPainting[img_, {n_, m_ : 1, mesh_ : None}] := Block[
-	{im, pts, dat}, im = ImageAdjust[ImageResize[img, n]];
+	{im, pts, dat},
+	im = ImageAdjust[ImageResize[img, n]];
 	dat = Apply[RGBColor, Flatten[Transpose[Reverse[ImageData[im]]], 1], {1}];
 	pts = Flatten[Table[{x, y} + RandomReal[m{-1, 1}], {x, 1, n}, {y, 1, n}], 1];
 	ListDensityPlot[
@@ -95,7 +98,8 @@ TranslateObject[p_, {x_, y_}] := Map[{x, y} + #&, p, {2}];
 HouseHexPolygon[s_, 0] := Polygon[s * {{1 / 2, -1}, {3 / 2, 0}, {3 / 2, 1}, {-1 / 2, 1}, {-3 / 2, 0}, {-3 / 2, -1}}];
 HouseHexPolygon[s_, 1] := Polygon[s * {{1, 1 / 2}, {0, 3 / 2}, {-1, 3 / 2}, {-1, -1 / 2}, {0, -3 / 2}, {1, -3 / 2}}];
 HouseHexGrid[s_, imax_, jmax_] := Block[
-	{imod, jmod, k, m}, Flatten[Table[imod = Mod[2i, 5];
+	{imod, jmod, k, m},
+	Flatten[Table[imod = Mod[2i, 5];
 	jmod = Mod[2i + 3, 5];
 	k = Range[0, Floor[(jmax - imod) / 5]];
 	m = Range[0, Floor[(jmax - jmod) / 5]];
@@ -121,8 +125,7 @@ HexPainting[image_, s_, t_ : 0] := Block[
 	greys = colours /. RGBColor[rr_, gg_, bb_] -> 0.299rr + 0.587gg + 0.114bb;
 	g[[2]] = Transpose[{colours, g[[2]]}][[Ordering[greys]]];
 	If[t == 1,
-		Graphics[{EdgeForm[{Thickness[0.0003], Black}],
-			GraphicsComplex[g[[1]], g[[2]]]}],
+		Graphics[{EdgeForm[{Thickness[0.0003], Black}], GraphicsComplex[g[[1]], g[[2]]]}],
 		Graphics[{GraphicsComplex[g[[1]], g[[2]]]}]
 	]
 ];
@@ -130,4 +133,9 @@ HexPainting[image_, s_, t_ : 0] := Block[
 
 (* ::Subsection::Closed:: *)
 (*附加设置*)
-End[]
+End[];
+SetAttributes[
+	{ },
+	{Protected, ReadProtected}
+];
+EndPackage[]
