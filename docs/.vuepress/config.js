@@ -21,7 +21,20 @@ module.exports = {
 				children: [
 					'/Start/',
 					'/Start/Developer.md',
-					'/Start/Editor.md'
+					'/Start/Editor.md',
+					'/Start/EditorAdv.md'
+				]
+			},
+			{
+				title: 'LineArt 模块',
+				children: [
+					'/LineArt/'
+				]
+			},
+			{
+				title: 'PolyArt 模块',
+				children: [
+					'/PolyArt/'
 				]
 			},
 			{

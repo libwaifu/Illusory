@@ -49,6 +49,6 @@ Row[{img,StereogramDecode[img,shift=Last@ImageDimensions[img]/6]}]
 
 ![StereogramDecode_Output.png](https://i.loli.net/2018/08/02/5b6253ee8df11.png)
 
-视差位移和图片中模式的重复模式有关, 一般重复几次就是图片宽度除几.
+视差位移和图片中的重复模式有关, 一般重复几次就是图片宽度除几.
 
 可以看到重校准以后显影出来是两只蟋蟀.
