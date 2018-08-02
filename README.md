@@ -1,20 +1,22 @@
-# Illusory — 
+# Illusory —
 
 [![Build Status](https://travis-ci.org/GalAster/Illusory.svg?branch=master)](https://travis-ci.org/GalAster/Illusory)
 [![Mathematica](https://img.shields.io/badge/Mathematica-%3E%3D10.0-brightgreen.svg)](https://www.wolfram.com/mathematica/)
-[![Release Vision](https://img.shields.io/badge/release-v0.5.0-ff69b4.svg)](https://github.com/GalAster/Illusory/releases)
+[![Release Vision](https://img.shields.io/badge/release-v0.1.x-ff69b4.svg)](https://github.com/GalAster/Illusory/releases)
 [![Repo Size](https://img.shields.io/github/repo-size/GalAster/Illusory.svg)](https://github.com/GalAster/Illusory.git)
 
 ![Background](https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/pic/MainPage.jpg)
 
 ## ![项目简介](https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/ico/board-game-blocks.png) Introduce
 
-
+详细文档: https://illusory.netlify.com/
 
 ## ![安装方式](https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/ico/board-game-map.png) Install
 
-
-#### 自动安装
+**一键安装:**
+```Mathematica
+PacletInstall["Illusory","Site"->"http://m.vers.site/"]
+```
 
 
 ## ![意见建议](https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/ico/board-game-box.png) Show Time!
@@ -43,8 +45,6 @@ In[4]:= "如图"
   - [ ] 24点
   - [ ] 算法优化
 - [ ] 猜拳
-- [ ] n 皇后
-- [ ] 约瑟夫游戏
 
 - [查看完整计划](https://github.com/GalAster/Illusory/blob/master/Resources/Todo%20List%20Full.md)
 
@@ -52,8 +52,8 @@ In[4]:= "如图"
 ## ![更新日志](https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/ico/hourglass.png) Change Log
 
 | 版本号 |最近更新|
-|:-----:| --- 
-| 0.5.0 | Bugfix Ver
+|:-----:| ---
+| 0.1.0 | Bugfix Ver
 
 | Older | [查看完整记录](https://github.com/GalAster/Illusory/blob/master/Resources/Change%20Log%20Full.md)
 
@@ -61,13 +61,6 @@ In[4]:= "如图"
 
 ### 联系方式
 
+QQ 群: 1014125
 
-|知乎主页|QQ群聊| 
-|:-:|:-:|
-|[<img src="https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/pic/Logo_Zhihu.png" alt="知乎链接" width = "100" align=center />](https://www.zhihu.com/people/GalAster)|[<img src="https://raw.githubusercontent.com/GalAster/Illusory/master/Resources/pic/Logo_QQ.png" alt="QQ链接" width = "100" align=center />](https://jq.qq.com/?_wv=1027&k=5BqFya1)
-
-
-
-
-
-©Copyright by Mozilla Public License Version 2.0
+©Copyright by **Creative Commons — Attribution 4.0 International — BY+NA+NC**.

@@ -33,7 +33,6 @@ StereogramDecode[img_Image, shift_Integer] := With[
 	{ics = ImageDisplacements[{ImageTake[img, All, {shift + 1, -1}], ImageTake[img, All, {1, -shift - 1}]}]},
 	Image[Function[depth, 1600depth / (160 + depth)][Map[Norm, RandomChoice@ics, {2}]]] // ImageAdjust
 ];
-End[];
 SetAttributes[
 	{ },
 	{Protected, ReadProtected}

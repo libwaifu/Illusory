@@ -1,3 +1,4 @@
+FourierPaintPointListToLines::usage = "";
 PersonalCurveMake::usage = "";
 PersonalCurveGet::usage = "";
 FourierPlot::usage = "";

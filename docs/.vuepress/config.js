@@ -4,7 +4,7 @@ module.exports = {
 		'/': {
 			lang: 'zh-CN',
 			title: 'Illusory',
-			description: '视觉盛宴!'
+			description: 'Mathematica 视觉盛宴!'
 		}
 	},
 	serviceWorker: true,
@@ -17,11 +17,17 @@ module.exports = {
 		},
 		sidebar: [
 			{
-				title: '简介',
+				title: '开发文档',
 				children: [
 					'/Start/',
 					'/Start/Developer.md',
 					'/Start/Editor.md'
+				]
+			},
+			{
+				title: 'Stereogram 模块',
+				children: [
+					'/Stereogram/'
 				]
 			}
 		]
