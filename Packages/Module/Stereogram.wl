@@ -1,6 +1,6 @@
 (* ::Package:: *)
 (* ::Title:: *)
-(*Example(样板包)*)
+(*Stereogram 模块*)
 (* ::Subchapter:: *)
 (*程序包介绍*)
 (* ::Text:: *)
@@ -9,7 +9,7 @@
 (*Establish from GalAster's template*)
 (**)
 (*Author: 我是作者*)
-(*Creation Date: 我是创建日期*)
+(*Creation Date: 2018-7-30*)
 (*Copyright:CC4.0 BY+NA+NC*)
 (* ::Program:: *)
 (*该项许可协议规定*)
@@ -28,7 +28,7 @@ StereogramDecode::usage = "";
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
 (*主设置*)
-ExNumber::usage = "程序包的说明,这里抄一遍";
+Stereogram::usage = "程序包的说明,这里抄一遍";
 Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
@@ -47,7 +47,7 @@ StereogramShift[maxshift_][pattern_Image, depth_Image] := Block[
 ];
 (*算法参考: *)
 (*https://www.wolfram.com/language/11/image-and-signal-processing/visualize-and-synthesize-stereograms.html?product=mathematica*)
-StereogramEncode[pattern_Image, depth_Image, maxshift_Integer : 24] := Module[
+StereogramEncode[pattern_Image, depth_Image, maxshift_ : 24] := Module[
 	{W, H, w, h, depthMap, patternStrip, ips},
 	{w, h} = ImageDimensions[pattern];
 	{W, H} = ImageDimensions[depth];
@@ -66,7 +66,7 @@ StereogramEncode[pattern_Image, depth_Image, maxshift_Integer : 24] := Module[
 
 (* ::Subsubsection:: *)
 (*StereogramDecode*)
-StereogramDecode[img_Image, shift_Integer] := With[
+StereogramDecode[img_Image, shift_] := With[
 	{ics = ImageDisplacements[{ImageTake[img, All, {shift + 1, -1}], ImageTake[img, All, {1, -shift - 1}]}]},
 	Image[Function[depth, 1600depth / (160 + depth)][Map[Norm, RandomChoice@ics, {2}]]] // ImageAdjust
 ];
