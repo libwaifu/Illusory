@@ -33,70 +33,65 @@ Begin["`Private`"];
 (* ::Subsection::Closed:: *)
 (*主体代码*)
 (* ::Subsubsection:: *)
-(*功能块 1*)
-Options[Textify] = {FontFamily -> "Inconsolata", ColorNegate -> False, Colorize -> True};
-Textify[img_, grainchoice_, OptionsPattern[]] := Module[
+(*Textify*)
+TextifyRasterizeMemory[expr__] := TextifyRasterizeMemory[expr] = Rasterize[expr];
+TextifyCleanMemory[] := With[
 	{},
-(*Chars used in output that are not part of the alphabets*)
-	charsbasic = {"$", "&", "'", ",", ".", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", ":", ";", "?"};
-	chars = RandomSample[Join[CharacterRange[65, 122], charsbasic], UpTo[100]];
-	
+	Clear[TextifyRasterizeMemory];
+	TextifyRasterizeMemory[expr_] := TextifyRasterizeMemory[expr] = Rasterize[expr];
+];
+Options[TextifyChars] = {FontFamily -> "Inconsolata", FontSize -> 12, RasterSize -> 50, ClearAll -> False};
+TextifyChars[lang_String, opt___] := Module[
+	{chars = Alphabet[lang]},
+	If[ListQ@chars, Textify[chars, opt], Textify[Alphabet[], opt]]
+];
+TextifyChars[chars_List, OptionsPattern[]] := Module[
+	{fnt, gridWidth, gridHeight, light},
+	If[ClearAll, TextifyCleanMemory[]];
+	(*Chars used in output that are not part of the alphabets*)
+	fnt = Style[#, FontFamily -> OptionValue[FontFamily], FontSize -> OptionValue[FontSize]]&;
 	(*calculates the dimensions of characters*)
-	{truecharwidth , truecharheight} = Max /@ Transpose[ImageDimensions@Rasterize[
-		Style[#, FontFamily -> OptionValue[FontFamily]]
-	] & /@ chars];
-	
+	{gridWidth , gridHeight} = Max /@ Transpose[ImageDimensions@TextifyRasterizeMemory[fnt@#] & /@ chars];
 	(*creates a table of the brightness levels of chars*)
-	charsmean = Table[ImageMeasurements[ColorConvert[Rasterize[Pane[
-		Style[chars[[a]], FontFamily -> OptionValue[FontFamily]],
-		{truecharwidth, truecharheight}, Alignment -> Center], ImageSize -> 50], "Grayscale"], "Mean"], {a, 1, Length[chars]}];
-	
-	
-	(*sets grain*)
-	{charwidth, charheight} = If[
-		grainchoice == "Auto",
-		{truecharwidth, truecharheight},
-		{grainchoice, Round[grainchoice * (truecharheight + 0) / truecharwidth]}
-	];
-	
-	(*dark images will not be well represented by chars, as they have a white background, so before applying the program the image brightness is scales up accordingly*)
-	bleach[im_] := im * (1 - Min[charsmean]) + Min[charsmean];
-	
-	(*creates a table of rasterized columns of strings that resemble frames of a gif*)
-	
-	graphicframe = If[OptionValue[ColorNegate] === True, ColorNegate[img], img];
-	
+	light = ImageMeasurements[ColorConvert[TextifyRasterizeMemory[Pane[fnt@#, {gridWidth, gridHeight}, Alignment -> Center], ImageSize -> OptionValue[RasterSize]], "Grayscale"], "Mean"]& /@ chars;
+	<|
+		"CharsSet" -> chars,
+		"CharsLight" -> light,
+		"GridWidth" -> gridWidth,
+		"GridHeight" -> gridHeight,
+		"Font" -> OptionValue[FontFamily],
+		"FontSize" -> OptionValue[FontSize]
+	|>
+];
+Options[Textify] = {ColorNegate -> False, Colorize -> True, Text -> False, Magnify -> 1};
+Textify[pics_List, opt__] := Map[Textify[#, opt]&, pics];
+Textify[img_Image, chars_, OptionsPattern[]] := Module[
+	{trueCharWidth, trueCharHeight, charWidth, charHeight, neg, pic, avg, diffs, best, charGrid},
+	charWidth = Round[OptionValue[Magnify](trueCharWidth = chars["GridWidth"])];
+	charHeight = Round[OptionValue[Magnify](trueCharHeight = chars["GridHeight"])];
+	neg = If[OptionValue[ColorNegate], ColorNegate[img], img];
 	(*creates a partitioned black and white, bleached image*)
-	pic = ImagePartition[ImageApply[bleach, {ColorConvert[graphicframe, "Grayscale"]}], {charwidth, charheight}];
-	
-	(*creates a partitioned colored image if coloredchoice is true*)
-	If[OptionValue[Colorize] == True, picwc = ImagePartition[graphicframe, {charwidth, charheight}];, ""];
-	
-	(*calculated the dimensions of the partitioned image*)
-	{height, width} = Dimensions[pic];
-	
+	pic = ImagePartition[ImageApply[# + Min[chars["CharsLight"]](1 - #)&, {ColorConvert[neg, "Grayscale"]}], {charWidth, charHeight}];
 	(*calculates the average brightness for each piece of the image*)
-	picmeans = Table[ImageMeasurements[pic[[y, x]], "Mean"], {x, 1, width}, {y, 1, height}];
-	
+	avg = Map[ImageMeasurements[#, "Mean"]&, pic, {2}];
 	(*names a function that calculates the differences between a piece of the image and all chars*)
-	diffs[rownumber_, placeinrow_] := Table[charsmean[[a]] - picmeans[[rownumber, placeinrow]], {a, 1, Length[chars]}]^2;
-	
+	diffs[column_, row_] := Table[chars["CharsLight"][[a]] - avg[[row, column]], {a, 1, Length[chars["CharsSet"]]}]^2;
 	(*picks the character whoose difference is the smallest*)
-	best[x_, y_] := chars[[Position[diffs[x, y], Min[diffs[x, y]]][[1, 1]]]];
-	
+	best[x_, y_] := chars["CharsSet"][[Position[diffs[x, y], Min[diffs[x, y]]][[1, 1]]]];
 	(*creates a column of rows of colored best fitting letters, colored or black*)
-	charpic = If[
-		OptionValue[Colorize] == True,
-		TableForm[Table[Style[best[testx, testy], FontColor -> RGBColor[ImageMeasurements[picwc[[testy, testx]], "Mean"]]], {testy, 1, height}, {testx, 1, width}], TableSpacing -> {0, 0}],
-		TableForm[Table[Style[best[testx, testy], FontColor -> Black], {testy, 1, height}, {testx, 1, width}], TableSpacing -> {0, 0}]
+	charGrid = If[
+		OptionValue[Colorize],
+		TableForm[Table[Style[best[x, y], FontColor -> RGBColor[ImageMeasurements[ImagePartition[neg, {charWidth, charHeight}][[y, x]], "Mean"]]], {y, Length@pic}, {x, Length@First[pic]}], TableSpacing -> {0, 0}],
+		TableForm[Table[Style[best[x, y], FontColor -> Black], {y, Length@pic}, {x, Length@First[pic]}], TableSpacing -> {0, 0}]
 	];
-	(*rasterizes the column of strings*)
+	If[OptionValue[Text], Return[charGrid]];
+	(*rasterize the column of strings*)
 	If[
-		OptionValue[ColorNegate] == True,
-		ColorNegate[Rasterize[Style[TableForm[Map[Pane[#, {truecharwidth, truecharheight}, Alignment -> Center]&, charpic, {3}], TableSpacing -> {0, 1}], FontFamily -> OptionValue[FontFamily]]]],
-		Rasterize[Style[TableForm[Map[Pane[#, {truecharwidth, truecharheight}, Alignment -> Center]&, charpic, {3}], TableSpacing -> {0, 1}], FontFamily -> OptionValue[FontFamily]]]
+		OptionValue[ColorNegate],
+		ColorNegate[Rasterize[Style[TableForm[Map[Pane[#, {trueCharWidth, trueCharHeight}, Alignment -> Center]&, charGrid, {3}], TableSpacing -> {0, 1}], FontFamily -> chars["Font"], FontSize -> chars["FontSize"]]]],
+		Rasterize[Style[TableForm[Map[Pane[#, {trueCharWidth, trueCharHeight}, Alignment -> Center]&, charGrid, {3}], TableSpacing -> {0, 1}], FontFamily -> chars["Font"], FontSize -> chars["FontSize"]]]
 	]
-]
+];
 
 
 
@@ -112,7 +107,7 @@ ExampleFunction[2] = "我就是个示例函数,什么功能都没有";
 (*附加设置*)
 End[] ;
 SetAttributes[
-	{ },
+	{Textify, TextifyChars},
 	{Protected, ReadProtected}
 ];
 EndPackage[];
