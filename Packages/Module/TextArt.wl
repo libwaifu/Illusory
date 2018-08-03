@@ -22,8 +22,8 @@
 (* ::Section:: *)
 (*函数说明*)
 BeginPackage["TextArt`"];
-TextifyChars::usage = "";
-Textify::usage = "这里应该填这个函数的说明,如果要换行用\"\r\"\r就像这样";
+TextifyChars::usage = "TextifyChars 预渲染 Textify 所需的字符.";
+Textify::usage = "字符画, 使用字符近似的表示原来的图画.";
 (* ::Section:: *)
 (*程序包正体*)
 (* ::Subsection::Closed:: *)
@@ -43,7 +43,7 @@ TextifyCleanMemory[] := With[
 Options[TextifyChars] = {FontFamily -> "Source Sans Pro", FontSize -> 12, RasterSize -> 50, ClearAll -> False};
 TextifyChars[lang_String, opt___] := Module[
 	{chars = Alphabet[lang]},
-	If[ListQ@chars, Textify[chars, opt], Textify[Alphabet[], opt]]
+	If[ListQ@chars, TextifyChars[chars, opt], TextifyChars[Alphabet[], opt]]
 ];
 TextifyChars[chars_List, OptionsPattern[]] := Module[
 	{fnt, gridWidth, gridHeight, light},
