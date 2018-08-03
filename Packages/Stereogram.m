@@ -1,6 +1,6 @@
 StereogramEncode::usage = "";
 StereogramDecode::usage = "";
-ExNumber::usage = "程序包的说明,这里抄一遍";
+Stereogram::usage = "程序包的说明,这里抄一遍";
 Begin["`Stereogram`"];
 StereogramShift[maxshift_][pattern_Image, depth_Image] := Block[
 	{array, pos, shifted, width, height},
@@ -13,7 +13,7 @@ StereogramShift[maxshift_][pattern_Image, depth_Image] := Block[
 	];
 	ImageAssemble[{{ImageTake[pattern, All, {-width, -1}], shifted}}]
 ];
-StereogramEncode[pattern_Image, depth_Image, maxshift_Integer : 24] := Module[
+StereogramEncode[pattern_Image, depth_Image, maxshift_ : 24] := Module[
 	{W, H, w, h, depthMap, patternStrip, ips},
 	{w, h} = ImageDimensions[pattern];
 	{W, H} = ImageDimensions[depth];
@@ -29,7 +29,7 @@ StereogramEncode[pattern_Image, depth_Image, maxshift_Integer : 24] := Module[
 	];
 	ImageCrop[ImageAssemble@List@ips, {W, H}]
 ];
-StereogramDecode[img_Image, shift_Integer] := With[
+StereogramDecode[img_Image, shift_] := With[
 	{ics = ImageDisplacements[{ImageTake[img, All, {shift + 1, -1}], ImageTake[img, All, {1, -shift - 1}]}]},
 	Image[Function[depth, 1600depth / (160 + depth)][Map[Norm, RandomChoice@ics, {2}]]] // ImageAdjust
 ];
