@@ -26,6 +26,12 @@ module.exports = {
 				]
 			},
 			{
+				title: 'TextArt 模块',
+				children: [
+					'/TextArt/'
+				]
+			},
+			{
 				title: 'LineArt 模块',
 				children: [
 					'/LineArt/'
