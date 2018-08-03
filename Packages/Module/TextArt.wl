@@ -66,7 +66,7 @@ TextifyChars[chars_List, OptionsPattern[]] := Module[
 (*参考实现*)
 (*http://community.wolfram.com/groups/-/m/t/1381000*)
 Options[Textify] = {ColorNegate -> False, Colorize -> True, Text -> False, Magnify -> 1};
-Textify[pics_List, opt__] := Map[Textify[#, opt]&, pics];
+Textify[pics_List, opt__] := ParallelMap[Textify[#, opt]&, pics];
 Textify[img_Image, chars_, OptionsPattern[]] := Module[
 	{trueCharWidth, trueCharHeight, charWidth, charHeight, neg, pic, avg, diffs, best, charGrid},
 	charWidth = Round[OptionValue[Magnify](trueCharWidth = chars["GridWidth"])];
