@@ -13,11 +13,11 @@ Import[$head<>"TextArt.wl"];
 
 ### 参数说明
 
-::: tip `TextifyChars[lang]`
+::: tip TextifyChars[lang]
 - lang 类型为 `String`, 表示所使用的字母表, 等价于使用 `Alphabet`.
 :::
 
-::: tip `TextifyChars[chars]`
+::: tip TextifyChars[chars]
 - chars 类型为 `List`, 表示需要渲染的字符列表.
 :::
 
@@ -56,12 +56,12 @@ TextifyChars["Hiragana",FontFamily->"华文楷体"]
 
 ### 参数说明
 
-::: tip `Textify[img, chars]`
+::: tip Textify[img, chars]
 - img 类型为 `Image`, 表示需要转化的图片.
 - chars 类型为 `Association`, 表示预渲染的字符信息.
 :::
 
-::: tip `Textify[pics, chars]`
+::: tip Textify[pics, chars]
 - pics 类型为 `List`, 表示需要转化的图片列表, 比如 GIF 动图的分解.
 - chars 类型为 `Association`, 表示预渲染的字符信息.
 :::
@@ -84,10 +84,10 @@ TextifyChars["Hiragana",FontFamily->"华文楷体"]
 
 `List`, 如果开启 Text -> True
 
-::: danger Tip
-chars 由 TextifyChars 函数给出, 必须对字符进行预渲染.
-Colorize -> True 非常缓慢, 因为每个字符颜色改变, 需要重新渲染
-Text -> True 有可能返回一个缩略形式, 需要手动展开
+::: danger Attention!
+- chars 由 TextifyChars 函数给出, 必须对字符进行预渲染.
+- Colorize -> True 非常缓慢, 因为每个字符颜色改变, 需要重新渲染
+- Text -> True 有可能返回一个缩略形式, 需要手动展开
 :::
 
 ### 标准示例
