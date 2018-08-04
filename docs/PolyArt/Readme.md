@@ -4,7 +4,9 @@
 
 PolyArt 模块
 
-[test_path](~@pkg/PolyArt.m)
+[test_path1](~@pkg/PolyArt.m)
+
+[test_path2](https://illusory.netlify.com/pkg/PolyArt.m)
 
 - 模块可单独加载
 

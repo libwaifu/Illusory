@@ -11,7 +11,7 @@ yarn-error.log*
 # Build Temp
 .DS_Store
 docs/.build/
-
+docs/.vuepress/public/
 
 # Notebook
 *.nb
