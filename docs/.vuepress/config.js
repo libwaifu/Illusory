@@ -7,7 +7,6 @@ module.exports = {
 			description: 'Mathematica 视觉盛宴!'
 		}
 	},
-	serviceWorker: true,
 	themeConfig: {
 		repo: 'GalAster/Illusory',
 		editLinks: true,
@@ -50,5 +49,13 @@ module.exports = {
 				]
 			}
 		]
+	},
+	serviceWorker: true,
+	configureWebpack: {
+		resolve: {
+			alias: {
+				'@pkg': 'Packages/Module'
+			}
+		}
 	}
 };

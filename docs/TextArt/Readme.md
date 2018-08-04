@@ -5,8 +5,8 @@ TextArt 模块
 - 模块可单独加载
 
 ```haskell
-$head="https://raw.githubusercontent.com/GalAster/Illusory/master/Packages/Module/";
-Import[$head<>"TextArt.wl"];
+$site="https://coding.net/u/GalAster/p/Illusory_sync/git/raw/master/Packages/Module/";
+Import[$site<>"TextArt.wl"];
 ```
 
 ## TextifyChars
