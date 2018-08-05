@@ -1,21 +1,12 @@
-# Module
-
-## PolyArt
+# Functions
 
 PolyArt 模块
-
-[test_path1](~@pkg/PolyArt.m)
-
-[test_path2](https://illusory.netlify.com/pkg/PolyArt.m)
 
 - 模块可单独加载
 
 ```haskell
-$site="https://coding.net/u/GalAster/p/Illusory_sync/git/raw/master/Packages/Module/";
-Import[$site<>"PolyArt.wl"];
+Import["https://illusory.netlify.com/pkg/PolyArt.wl"];
 ```
-
-# Functions
 
 ## TriPainting
 
@@ -42,3 +33,7 @@ Import[]
 ```
 
 **测试输出:**
+
+## HexPainting
+
+## PolyPainting

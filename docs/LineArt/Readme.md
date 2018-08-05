@@ -5,8 +5,7 @@ LineArt 模块
 - 模块可单独加载
 
 ```haskell
-$site="https://coding.net/u/GalAster/p/Illusory_sync/git/raw/master/Packages/Module/";
-Import[$site<>"LineArt.wl"];
+Import["https://illusory.netlify.com/pkg/LineArt.wl"];
 ```
 
 ## LineWeb

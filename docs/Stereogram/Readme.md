@@ -5,8 +5,7 @@ Stereogram 模块是一个可以合成和解码**自动立体图**的程序包.
 - 模块可单独加载
 
 ```haskell
-$site="https://coding.net/u/GalAster/p/Illusory_sync/git/raw/master/Packages/Module/";
-Import[$site<>"Stereogram.wl"];
+Import["https://illusory.netlify.com/pkg/Stereogram.wl"];
 ```
 
 ## StereogramEncode
